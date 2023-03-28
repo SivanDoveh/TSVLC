@@ -19,27 +19,35 @@ Enter the directory:
 Create and activate the conda environment:
 ```shell script
 conda deactivate # deactivate any active environments
-conda create -n vl python=3.6 # install the conda environment with conda dependencies
+conda create -n vl python=3.8.13 # install the conda environment with conda dependencies
 conda activate vl # activate the environment
 conda install -c conda-forge libjpeg-turbo
-conda install pytorch==1.5.1 torchvision==0.6.1 cudatoolkit=10.2 -c pytorch
-pip install -r requirements.txt # install pip requirements
+conda install pytorch==1.12.1 torchvision==0.13.1 cudatoolkit=11.3.1 -c pytorch
+conda env update --file vl_dependencies.yml # install requirements
+pip install numpy
 ```
 
-# Data Preperations
+# Training Data Preperations
 Download Conceptual Captions 3M training and validation splits from https://ai.google.com/research/ConceptualCaptions/download
-After data preperation, place the data in `<TSVLC_ROOT_DIR>/cc3m_data/training` and `<TSVLC_ROOT_DIR>/cc3m_data/validation`
+After data preperation, place the data in `TSVLC/cc3m_data/training` and `TSVLC/cc3m_data/validation`
+
+# Evaluation Data Preperations
+Prepare vl checklist dataset as describe in https://github.com/om-ai-lab/VL-CheckList/blob/main/DATASETS.md
+Then move the vl dataset to `TSVLC/vl_datasets/`
+If you followd the instructions correctly you should have the following folders inside vl_datasets: hake, swig, vg
 
 # Training and Evaluation
 
 ## Run the training script
-To train a network with the RB negative generation - run the following command from the project root directory:
+The model will be saved in /logs/exp_name/checkpoints/
+
+To train a network with the RB negative generation - run the following command:
 ```shell script
 cd src
 python3 training/main.py --name exp_name --vl_negs --lora 4 --neg_type word_replacement --pretrained openai
 ```
 
-To train a network with the RB + Bert based negatives generation - run the following command from the project root directory:
+To train a network with the RB + Bert based negatives generation - run the following command:
 ```shell script
 cd src
 python3 training/main.py --name exp_name --vl_negs --lora 4 --lr 5e-06 --neg_type rand_both --auto_neg_types NOUN ADP ADJ VERB --pretrained openai
