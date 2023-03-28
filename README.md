@@ -31,6 +31,9 @@ pip install numpy
 Download Conceptual Captions 3M training and validation splits from https://ai.google.com/research/ConceptualCaptions/download
 After data preperation, place the data in `TSVLC/cc3m_data/training` and `TSVLC/cc3m_data/validation`
 
+## Train with Positives
+Download the positives from (need to upload to drive) and place them in `TSVLC/positives_cc3m/`
+
 # Evaluation Data Preperations
 Prepare vl checklist dataset as describe in https://github.com/om-ai-lab/VL-CheckList/blob/main/DATASETS.md
 Then move the vl dataset to `TSVLC/vl_datasets/`
@@ -50,7 +53,13 @@ python3 training/main.py --name exp_name --vl_negs --lora 4 --neg_type word_repl
 To train a network with the RB + Bert based negatives generation - run the following command:
 ```shell script
 cd src
-python3 training/main.py --name exp_name --vl_negs --lora 4 --lr 5e-06 --neg_type rand_both --auto_neg_types NOUN ADP ADJ VERB --pretrained openai
+python3 training/main.py --name exp_name --vl_negs --lora 4 --neg_type rand_both --auto_neg_types NOUN ADP ADJ VERB --pretrained openai
+```
+
+To train a network with the positives - run the following command:
+```shell script
+cd src
+python3 training/main.py --name exp_name --vl_pos --lora 4 --pretrained openai
 ```
 
 ## Run the evaluation script
