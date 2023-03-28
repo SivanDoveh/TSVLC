@@ -58,9 +58,4 @@ To prepare the vl checklist evaluate results for the experiment `exp_name` run t
 ```shell script
 python3 training/main.py  --lora 4 --pretrained openai --eval_recall --eval_vl_cklist --eval_only --resume ./Outputs/exp_name_checkpoint.pt
 ```
-## print vl checklist results
-To calculate the vl checklist results for the experiment `exp_name` run the following command:
-```shell script
-python3 training/main.py  --lora 4 --pretrained openai --eval_recall --eval_vl_cklist --eval_only --resume ./Outputs/exp_name_checkpoint.pt
-```
 
