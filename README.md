@@ -1,9 +1,9 @@
 # TSVLC
 Repository for the paper: Teaching Structured Vision &amp; Language Concepts to Vision &amp; Language Models
 
-link: https://arxiv.org/abs/2211.11733
+The link to the paper is: https://arxiv.org/abs/2211.11733
 
-model checkpoint for [model,RB] negatives:(https://drive.google.com/drive/folders/1WosT_kdam1ymWjVSK2ezyydLoqmm0LdX?usp=sharing)
+Model checkpoint for models trained with [LLM,RB] negatives:https://drive.google.com/drive/folders/1WosT_kdam1ymWjVSK2ezyydLoqmm0LdX?usp=sharing
 
 # Installation:
 ## Requirements
