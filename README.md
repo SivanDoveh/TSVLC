@@ -42,7 +42,7 @@ If you followd the instructions correctly you should have the following folders 
 # Training and Evaluation
 
 ## Run the training script
-The model will be saved in /logs/exp_name/checkpoints/  
+The model will be saved in TSVLC/Outputs/exp_name/checkpoints
 
 To train a network with the RB negative generation - run the following command:  
 ```shell script
@@ -65,6 +65,6 @@ python3 training/main.py --name exp_name --vl_pos --lora 4 --pretrained openai
 ## Run the evaluation script
 To prepare the vl checklist evaluate results for the experiment `exp_name` run the following command:
 ```shell script
-python3 training/main.py  --lora 4 --pretrained openai --eval_vl_cklist --eval_only --resume ./Outputs/exp_name/checkpoints/exp_name_checkpoint.pt
+python3 training/main.py  --lora 4 --pretrained openai --eval_vl_cklist --eval_only --resume /path/to/checkpoint
 ```
-
+All vl_checklist jsons will be saved in 'TSVLC/eval_jsons/clip/exp_name/' and the result will be printed
