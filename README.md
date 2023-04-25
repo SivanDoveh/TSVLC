@@ -29,10 +29,10 @@ pip install numpy
 
 # Training Data Preperations
 Download Conceptual Captions 3M training and validation splits from https://ai.google.com/research/ConceptualCaptions/download
-After data preperation, place the data in `TSVLC/cc3m_data/training` and `TSVLC/CC3M_data/validation`
+After data preperation, place the data in `TSVLC/CC3M_data/training` and `TSVLC/CC3M_data/validation`
 
 ## Train with Positives
-Download the positives from (need to upload to drive) and place them in `TSVLC/positives_CC3M/`
+Download the positives from (need to upload to drive) and place them in `TSVLC/CC3M_positives/`
 
 # Evaluation Data Preperations
 Prepare vl checklist dataset as describe in https://github.com/om-ai-lab/VL-CheckList/blob/main/DATASETS.md
