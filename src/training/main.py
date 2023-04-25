@@ -203,10 +203,6 @@ def main():
             betas=(args.beta1, args.beta2),
             eps=args.eps,
         )
-        if args.horovod:
-            optimizer = hvd.DistributedOptimizer(optimizer, named_parameters=model.named_parameters())
-            hvd.broadcast_parameters(model.state_dict(), root_rank=0)
-            hvd.broadcast_optimizer_state(optimizer, root_rank=0)
 
         scaler = GradScaler() if args.precision == "amp" else None
 
@@ -275,13 +271,6 @@ def main():
         if args.eval_recall:
             evaluate(model, data, start_epoch, args, writer)
         return
-
-
-    # elif start_epoch == 0 and not args.no_first_eval and any(v in data for v in ('val', 'imagenet-val', 'imagenet-v2')):# and args.val_data is not None
-    #     if args.eval_vl_cklist:
-    #         EvaluateAllVL(model,preprocess_val,start_epoch,args,writer)
-    #     if args.eval_recall:
-    #         evaluate(model, data, 0, args, writer)
 
     for epoch in range(start_epoch, args.epochs):
         if is_master(args):

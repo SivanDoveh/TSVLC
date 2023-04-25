@@ -16,31 +16,27 @@ def is_master(args):
     return (not args.distributed) or args.rank == 0
 
 
-def EvaluateAllVL(model, preprocess_val, start_epoch, args, writer):
+def EvaluateAllVL(model, preprocess_val, epoch, args, writer):
     model.eval()
 
     vl_eval = Evaluate(config_file="vl_checklist/configs/clip_all_obj.yaml", model=model,
-                           preprocess_val=preprocess_val, epoch=start_epoch, args=args, tb_writer=writer)
+                           preprocess_val=preprocess_val, epoch=epoch, args=args, tb_writer=writer)
     vl_eval.start()
 
     vl_eval = Evaluate(config_file="vl_checklist/configs/clip_all_attribute.yaml", model=model,
-                       preprocess_val=preprocess_val, epoch=start_epoch, args=args, tb_writer=writer)
+                       preprocess_val=preprocess_val, epoch=epoch, args=args, tb_writer=writer)
     vl_eval.start()
 
     vl_eval = Evaluate(config_file="vl_checklist/configs/clip_all_rel.yaml", model=model,
-                       preprocess_val=preprocess_val, epoch=start_epoch, args=args, tb_writer=writer)
+                       preprocess_val=preprocess_val, epoch=epoch, args=args, tb_writer=writer)
     vl_eval.start()
 
     vl_eval = Evaluate(config_file="vl_checklist/configs/clip_all_rel_spatial.yaml", model=model,
-                       preprocess_val=preprocess_val, epoch=start_epoch, args=args, tb_writer=writer)
+                       preprocess_val=preprocess_val, epoch=epoch, args=args, tb_writer=writer)
     vl_eval.start()
 
     m = json.load(open('training/' + 'corpus.json'))
-    try:
-        path = os.path.join(self.args.vl_checklist_accuracy_jsons_folder, args.resume.split('/')[-3])
-    except:
-        path = os.path.join(self.args.vl_checklist_accuracy_jsons_folder, args.model)
-    filepath = path
+    path = os.path.join(args.vl_checklist_accuracy_jsons_folder, args.name)
     score_list = []
     for ind, item in enumerate(m.keys()):
         data_num = len(m[item].keys())
@@ -49,17 +45,19 @@ def EvaluateAllVL(model, preprocess_val, start_epoch, args, writer):
             score = 0
             file_num = len(m[item][data])
             for file in m[item][data]:
-                json_name = os.path.join(filepath,f"{file}_{ep}.json")
+                json_name = os.path.join(path,f"{file}_{epoch}.json")
                 if not os.path.exists(json_name):
-                    print(f"{file}_{ep}.json has not been evaluated. model name: {self.args.resume.split('/')[-3]}")
-                    return
+                    print(f"{file}_{epoch}.json has not been evaluated. exp name: {args.name}")
                 else:
                     m1 = json.load(open(json_name))
                     score += m1["total_acc"]
 
             data_score.append(score/file_num)
         score_list.append(sum(data_score)/data_num)
-    print(f'{args.resume.split("/")[-3]} {score_list}')
+
+    test_names = ['O-Large', 'O-Medium', 'O-Small', 'O-Center', 'O-Mid', 'O-Margin', 'A-Color', 'A-Material', 'A-Size',"A-State", "A-Action", "R-action", "R-spatial",]
+    print(test_names)
+    print(f'{args.name} {score_list}')
 
 
 class Evaluate(object):
@@ -90,13 +88,13 @@ class Evaluate(object):
         avg = 0
         for data_type in self.types:
             results = self.eval(data_type=data_type)
-            avg += results
-        avg = avg / len(self.types)
-        if self.args.save_logs:
-            if self.tb_writer is not None:
-                self.tb_writer.add_scalar(f"val/{self.types[0].split('/')[0]}_avg_eval", avg, self.epoch)
-                logging.info(
-                    f" AVG {self.epoch}: {self.types[0].split('/')[0]}_avg_eval {avg}")
+        #     avg += results
+        # avg = avg / len(self.types)
+        # if self.args.save_logs:
+        #     if self.tb_writer is not None:
+        #         self.tb_writer.add_scalar(f"val/{self.types[0].split('/')[0]}_avg_eval", avg, self.epoch)
+        #         logging.info(
+        #             f" AVG {self.epoch}: {self.types[0].split('/')[0]}_avg_eval {avg}")
 
     def clip_model_wrapper(self, images, texts):
         probs = []
@@ -118,6 +116,10 @@ class Evaluate(object):
 
         if self.task == 'itc':
             for name in d.data:
+                path = os.path.join(self.args.vl_checklist_accuracy_jsons_folder, self.args.name)
+                file_name = data_type.replace("/", "_")
+                if os.path.exists(os.path.join(path, f'{file_name}_{name}_{self.epoch}.json')):
+                    continue
                 if not is_master(self.args):
                     continue
                 sample_true = []
@@ -158,10 +160,10 @@ class Evaluate(object):
                 accuracy = float(num_t) / (num_t + num_f)
                 results[name] = round(accuracy, 4)
                 file_name = data_type.replace("/", "_")
-                try:
-                    path = os.path.join(self.args.vl_checklist_accuracy_jsons_folder, self.args.resume.split('/')[-3])
-                except:
-                    path = os.path.join(self.args.vl_checklist_accuracy_jsons_folder, self.args.model)
+                # try:
+                #     path = os.path.join(self.args.vl_checklist_accuracy_jsons_folder, self.args.resume.split('/')[-3])
+                # except:
+                path = os.path.join(self.args.vl_checklist_accuracy_jsons_folder, self.args.name)
                 os.makedirs(path, exist_ok=True)
                 with open(os.path.join(path, f'{file_name}_{name}_{self.epoch}.json'), 'w',
                           encoding='utf-8') as f:
@@ -176,15 +178,15 @@ class Evaluate(object):
                         self.tb_writer.add_scalar(f"val/{name}/{data_type}_eval", round(accuracy, 4), self.epoch)
 
 
-        if self.args.save_logs and is_master(self.args):
-            if self.tb_writer is not None:
-                both_res=0
-                for k in results.keys():
-                    both_res += results[k]
-                both_res = both_res/results.keys().__len__()
-                self.tb_writer.add_scalar(f"val/both/{data_type}_eval", both_res, self.epoch)
-
-                return both_res
+        # if self.args.save_logs and is_master(self.args):
+        #     if self.tb_writer is not None:
+        #         both_res=0
+        #         for k in results.keys():
+        #             both_res += results[k]
+        #         both_res = both_res/results.keys().__len__()
+        #         self.tb_writer.add_scalar(f"val/both/{data_type}_eval", both_res, self.epoch)
+        #
+        #         return both_res
         return 0
 
 

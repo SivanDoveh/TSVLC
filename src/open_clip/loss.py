@@ -92,9 +92,9 @@ class ClipLoss(nn.Module):
         loss_pos = loss_neg = 0.
         if self.args.vl_pos:
             positive_text_features = text_features[:len(image_features)]
-            text_features = positive_text_features if self.args.only_blip_cap else text_features[len(image_features):]
+            text_features = text_features[len(image_features):]
 
-            loss_pos = 0 if self.args.only_blip_cap else self.get_loss_pos_only(image_features, text_features[:len(image_features)], positive_text_features,
+            loss_pos = self.get_loss_pos_only(image_features, text_features[:len(image_features)], positive_text_features,
                                          logit_scale)
         if self.args.vl_negs and pos_that_have_negs:
             loss_neg = self.get_loss_neg_only(image_features, text_features, logit_scale, pos_that_have_negs)
@@ -161,24 +161,20 @@ class ClipLoss(nn.Module):
     def get_loss_pos_only(self, image_features, text_features,poss_features, logit_scale):
         logits_per_image_text_pos = logit_scale * image_features @ poss_features.t()
         ground_truth = (torch.arange(len(logits_per_image_text_pos)).long()).to(self.args.device, non_blocking=True)
-        if not self.args.blip_cap:
-            logits_text_pos_to_text = logit_scale * text_features @ poss_features.t()
+        logits_text_pos_to_text = logit_scale * text_features @ poss_features.t()
         if self.args.symmetric:
             logits_per_image_text_pos_op = logit_scale * poss_features @ image_features.t()
-            if not self.args.blip_cap:
-                logits_text_pos_to_text_op = logit_scale * poss_features @ text_features.t()
+            logits_text_pos_to_text_op = logit_scale * poss_features @ text_features.t()
             total_loss = (F.cross_entropy(logits_per_image_text_pos, ground_truth)
                           + F.cross_entropy(logits_per_image_text_pos_op, ground_truth)
                          ) / 2
-            if not self.args.blip_cap:
-                total_loss += ( F.cross_entropy(logits_text_pos_to_text, ground_truth)
-                + F.cross_entropy(logits_text_pos_to_text_op, ground_truth))/2
-                total_loss = total_loss/2
+            total_loss += ( F.cross_entropy(logits_text_pos_to_text, ground_truth)
+                    + F.cross_entropy(logits_text_pos_to_text_op, ground_truth))/2
+            total_loss = total_loss/2
         else:
             total_loss = F.cross_entropy(logits_per_image_text_pos, ground_truth)
-            if not self.args.blip_cap:
-                total_loss+= F.cross_entropy(logits_text_pos_to_text, ground_truth)
-                total_loss = total_loss / 2
+            total_loss+= F.cross_entropy(logits_text_pos_to_text, ground_truth)
+            total_loss = total_loss / 2
 
 
         if self.args.kl_pos:

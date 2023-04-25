@@ -340,6 +340,10 @@ def parse_args():
     #training using text negatives and positive
     parser.add_argument("--vl_negs", default=False, action="store_true", help="vl negatives")
     parser.add_argument("--vl_pos", default=False, action="store_true", help="vl positives")
+    parser.add_argument("--symmetric", default=False, action="store_true", help="symmetric in positives",)
+    parser.add_argument("--kl_pos", default=False, action="store_true", help="kl_pos")
+    parser.add_argument("--common_batch_pos", default=False, action="store_true", help="use common_batch_pos")
+
     parser.add_argument("--CC3M_positivies_folder", type=str, default=f"{parent_dir}/CC3M_positives/",
                         help="CC3M_positivies_folder", )
     parser.add_argument("--num_negs",default=1,type=int,help="number of negative examples",)
