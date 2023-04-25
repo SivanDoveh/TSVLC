@@ -3,7 +3,7 @@ Repository for the paper: Teaching Structured Vision &amp; Language Concepts to 
 
 link: https://arxiv.org/abs/2211.11733
 
-model checkpoint for [model,RB] negatives: /dccstor/sivandov1/dev/open_clip_vl/Outputs/cor_cc3m_both_negs
+model checkpoint for [model,RB] negatives:(https://drive.google.com/drive/folders/1WosT_kdam1ymWjVSK2ezyydLoqmm0LdX?usp=sharing)
 
 # Installation:
 ## Requirements
@@ -50,7 +50,7 @@ cd src
 python3 training/main.py --name exp_name --vl_negs --lora 4 --neg_type rule_based --pretrained openai
 ```
 
-To train a network with the RB + Bert based negatives generation - run the following command:
+To train a network with the RB + llm based negatives generation - run the following command:
 ```shell script
 cd src
 python3 training/main.py --name exp_name --vl_negs --lora 4 --neg_type both --llm_neg_types NOUN ADP ADJ VERB --pretrained openai
