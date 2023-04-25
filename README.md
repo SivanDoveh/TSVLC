@@ -47,13 +47,13 @@ The model will be saved in /logs/exp_name/checkpoints/
 To train a network with the RB negative generation - run the following command:
 ```shell script
 cd src
-python3 training/main.py --name exp_name --vl_negs --lora 4 --neg_type word_replacement --pretrained openai
+python3 training/main.py --name exp_name --vl_negs --lora 4 --neg_type rule_based --pretrained openai
 ```
 
 To train a network with the RB + Bert based negatives generation - run the following command:
 ```shell script
 cd src
-python3 training/main.py --name exp_name --vl_negs --lora 4 --neg_type rand_both --auto_neg_types NOUN ADP ADJ VERB --pretrained openai
+python3 training/main.py --name exp_name --vl_negs --lora 4 --neg_type both --llm_neg_types NOUN ADP ADJ VERB --pretrained openai
 ```
 
 To train a network with the positives - run the following command:
