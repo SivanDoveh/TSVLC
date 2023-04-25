@@ -1,0 +1,12 @@
+MAX_NUM: 2000
+BATCH_SIZE: 4
+MODE_NAME: "CLIP"
+TASK: "itc"
+DATA:
+  TYPES: ["Relation/action",]
+  TEST_DATA: ["hake","swig","vg",]
+OUTPUT:
+  DIR: "output/clip"
+  NUM: 5
+
+

@@ -1,0 +1,12 @@
+MAX_NUM: 2000
+BATCH_SIZE: 4
+MODE_NAME: "CLIP"
+TASK: "itc"
+DATA:
+  TYPES: ["Object/Location/mid","Object/Size/large","Object/Size/medium","Object/Size/small","Object/Location/center","Object/Location/margin",]
+  TEST_DATA: ["swig_agent","hake","swig_destination","swig_item","swig_tool","vg_obj","vg_subj",]
+OUTPUT:
+  DIR: "output/clip"
+  NUM: 5
+
+

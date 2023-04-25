@@ -1,0 +1,10 @@
+MAX_NUM: 2000
+BATCH_SIZE: 4
+MODE_NAME: "CLIP"
+TASK: "itc"
+DATA:
+  TYPES: ["Attribute/color","Attribute/material","Attribute/size","Attribute/state","Attribute/action",]
+  TEST_DATA: ["vg","vaw"]
+OUTPUT:
+  DIR: "output/clip"
+  NUM: 5
