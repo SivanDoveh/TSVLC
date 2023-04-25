@@ -13,9 +13,9 @@ Model checkpoint for models trained with [LLM,RB] negatives:https://drive.google
 1. Anaconda (Installation instructions: https://docs.anaconda.com/anaconda/install/)
 ## Install Dependencies
 Clone the repository:  
-`git clone TSVLC`
+`git clone TSVLC`  
 Enter the directory:  
-`cd TSVLC`
+`cd TSVLC`  
 Create and activate the conda environment:  
 ```shell script
 conda deactivate # deactivate any active environments
