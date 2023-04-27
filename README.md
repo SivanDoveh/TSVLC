@@ -12,10 +12,11 @@ Model checkpoint for models trained with [LLM,RB] negatives and the generated po
 1. At least CUDA 10.2
 1. Anaconda (Installation instructions: https://docs.anaconda.com/anaconda/install/)
 ## Install Dependencies
-Clone the repository:  
-`git clone TSVLC`  
-Enter the directory:  
-`cd TSVLC`  
+Clone the repository and enter the directory: 
+```shell script
+git clone TSVLC  
+cd TSVLC 
+```  
 Create and activate the conda environment:  
 ```shell script
 conda deactivate # deactivate any active environments
@@ -23,9 +24,6 @@ conda create -n vl python=3.8.13 # install the conda environment with conda depe
 conda activate vl # activate the environment
 conda install -c conda-forge libjpeg-turbo
 conda install pytorch==1.12.1 torchvision==0.13.1 cudatoolkit=11.3.1 -c pytorch
-conda env update --file vl_dependencies.yml # install requirements
-pip install numpy
-
 ```
 
 # Data Preperations
