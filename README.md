@@ -50,7 +50,7 @@ cd src
 ```
 The model will be saved in TSVLC/Outputs/exp_name/checkpoints
 
-run the following command in order to train a network with:
+run the following command in order to train a network with:  
 RB negative generation:
 ```shell script
 python3 training/main.py --name exp_name --vl_negs --lora 4 --neg_type rule_based --pretrained openai
