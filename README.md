@@ -3,7 +3,9 @@
 This repository contains the code for the paper "Teaching Structured Vision & Language Concepts to Vision & Language Models" ([link](https://arxiv.org/abs/2211.11733)), by Sivan Doveh et al, published at CVPR 2023.
 
 
-A model checkpoint for models trained with [LLM,RB] negatives, and a zip file of the generated positives can be downloaded from this Google Drive link: :https://drive.google.com/drive/folders/1WosT_kdam1ymWjVSK2ezyydLoqmm0LdX?usp=sharing  
+A model checkpoint for models trained with [LLM,RB] negatives, and a zip file of the generated positives can be downloaded from this Google Drive link::https://drive.google.com/drive/folders/1WosT_kdam1ymWjVSK2ezyydLoqmm0LdX?usp=sharing  
+
+"train_with_cap.csv" and "val_with_cap.csv" are also in the google drive ^^ 
 
 ## Installation:
 ### Requirements
