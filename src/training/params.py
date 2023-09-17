@@ -201,7 +201,7 @@ def parse_args():
         help='Override default image mean value of dataset')
     parser.add_argument(
         '--image-std', type=float, nargs='+', default=None, metavar='STD',
-        help='Override default image std deviation of of dataset')
+        help='Override default image std deviation of dataset')
     parser.add_argument(
         "--grad-checkpointing",
         default=False,
@@ -278,7 +278,7 @@ def parse_args():
         "--copy-codebase",
         default=False,
         action="store_true",
-        help="If true, we copy the entire base on the log diretory, and execute from there."
+        help="If true, we copy the entire base on the log directory, and execute from there."
     )
     parser.add_argument(
         "--horovod",
@@ -337,7 +337,7 @@ def parse_args():
     parser.add_argument("--save_eval_model", default=False, action="store_true", help="save_eval_model")
 
 
-    #training using text negatives and positive
+    #training using text negatives and positives
     parser.add_argument("--vl_negs", default=False, action="store_true", help="vl negatives")
     parser.add_argument("--vl_pos", default=False, action="store_true", help="vl positives")
     parser.add_argument("--symmetric", default=False, action="store_true", help="symmetric in positives",)
